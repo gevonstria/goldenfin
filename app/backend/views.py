@@ -5,6 +5,7 @@ from django.http import JsonResponse
 import json
 
 class LogIn(View):
+
     def post(self, request):
         post_data = json.loads(request.body)
         user = authenticate(username=post_data["username"], password=post_data["password"])
@@ -13,5 +14,16 @@ class LogIn(View):
         else:
             message = "invalid"
             # No backend authenticated the credentials
+        return JsonResponse({"message": message})
+
+class LoanDetails(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        post_data = json.loads(request.body)
+        print(post_data)
+        message = "success"
         return JsonResponse({"message": message})
 

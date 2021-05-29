@@ -9,8 +9,8 @@
     </div>
 </nav>
 <!-- Page content-->
-<div id="alert-message" class="alert alert-danger mt-1 mr-1 ml-1" role="alert" style="display: None">
-</div>
+<div id="alert-message" class="alert alert-danger mt-1 mr-1 ml-1" role="alert" style="display: None"></div>
+<div id="save-message" class="alert alert-success mt-1 mr-1 ml-1" role="alert" style="display: None">Saving... Please wait.</div>
 <div class="container">
     <div class="row mt-5">
         <div class="col">
@@ -70,7 +70,7 @@
                     </div>
                      <div class="form-group">
                       <label for="input-loan-terms">Loan Terms</label>
-                      <input type="text" class="form-control" id="input-principal" aria-describedby="principalHelp" placeholder="Enter Months">
+                      <input type="text" class="form-control" id="input-loan-terms" aria-describedby="termsHelp" placeholder="Enter Months">
                       <small id="terms-info" class="form-text text-muted">3-18 Months</small>
                     </div>
                   </div>
@@ -109,7 +109,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-primary">Save changes</button>
+        <button id="btn-loan-save" type="button" class="btn btn-sm btn-primary">Save changes</button>
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -120,6 +120,17 @@
 {% block additional_scripts %}
 <script type="text/javascript">
     $( document ).ready(function() {
+
+      // populate for testing
+      $("#input-principal").val("10000");
+      $("#input-amortization").val(0);
+      $("#input-loan-terms").val("3");
+      $("#input-fullname").val("Joven Tria");
+      $("#input-email").val("gevtria@gmail.com");
+      $("#input-mobile-number").val("09159627501");
+      $("#input-city").val("Manila");
+      $("#input-province").val("NCR");
+
       // Loan type select
       $("#select-loan-type").on('change', function() {
         if(this.value == "A"){
@@ -133,7 +144,42 @@
           $("#type-b").show();
           $("#terms-info").text("6-18 months");
         }
+      }); // end of select
+      $("#btn-loan-save").click(function() {
+        $("#modal-add").modal("hide");
+        $("#save-message").show();
+
+        post_data = {
+          "loan_type": $("#select-loan-type").val(),
+          "loan_amount": $("#input-principal").val(),
+          "loan_amortization": $("#input-amortization").val(),
+          "loan_terms": $("#input-loan-terms").val(),
+          "fullname": $("#input-fullname").val(),
+          "email": $("#input-email").val(),
+          "mobile_number": $("#input-mobile-number").val(),
+          "city": $("#input-city").val(),
+          "province": $("#province").val()
+        };
+
+        $.ajax({
+            contentType: 'application/json',
+            data: JSON.stringify(post_data),
+            dataType: 'json',
+            success: function(data){
+              if(data["message"] == "success"){
+                window.location.reload(true); 
+              }else{
+
+              }
+            },
+            error: function(){
+               alert("OOOPSSS! Something Went Wrong!");
+            },
+            type: 'POST',
+            processData: false,
+            url: '/api/loans'
+        });
       });
-    });
+    }); // end of doc ready
 </script>
 {% endblock %}
