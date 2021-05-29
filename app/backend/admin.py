@@ -1,3 +1,5 @@
 from django.contrib import admin
+from backend.models import LoanDetails, Customer
 
-# Register your models here.
+admin.site.register(LoanDetails)
+admin.site.register(Customer)
