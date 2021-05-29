@@ -220,7 +220,6 @@
       });
 
     $(document).on( "click", ".btn-view", function(){
-        alert($(this).attr("id"));
         $.ajax({
           url: "/api/loan/" +$(this).attr("id"),
           type: 'GET',

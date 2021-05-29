@@ -74,4 +74,4 @@ class LoanDescribe(View):
         else:
             return HttpResponseNotFound("Loan Id not found.")         
 
-        return JsonResponse(loan)
+        return JsonResponse(loan_data)
