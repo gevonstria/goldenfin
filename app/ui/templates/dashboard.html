@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Responsive navbar-->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Golden Financial</a>
+    </div>
+</nav>
+<!-- Page content-->
+<div id="alert-message" class="alert alert-danger mt-1 mr-1 ml-1" role="alert" style="display: None">
+</div>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              Loans
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+                <div class="col-3">
+                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-add">Add</button>
+                  <button type="button" class="btn btn-sm btn-warning">Cancel</button>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="modal-add" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Loan Application</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <form>
+              <div class="form-group">
+                <label for="select-loan-type">Loan Type</label>
+                <select class="form-control" id="select-loan-type">
+                  <option value="A">Type A</option>
+                  <option value="B">Type B</option>
+                </select>
+                <div class="card mt-2">
+                  <div class="card-body">
+                    <h5 class="card-title">Loan Information</h5>
+                    <h6 id="loan-type-header" class="card-subtitle mb-2 text-muted">Type A</h6>
+                    <div id="type-a" class="form-group">
+                      <label for="input-principal">Desired loan amount (principal)</label>
+                      <input type="text" class="form-control" id="input-principal" aria-describedby="principalHelp" placeholder="Enter Amount">
+                      <small id="emailHelp" class="form-text text-muted">Minimum of Php 10,000.00</small>
+                    </div>
+                    <div id="type-b" class="form-group" style="display: None">
+                      <label for="input-amortization">Desired Monthly Amortization</label>
+                      <input type="text" class="form-control" id="input-amortization" aria-describedby="amortizationHelp" placeholder="Enter Amount">
+                      <small id="emailHelp" class="form-text text-muted">Minimum of Php 10,000.00</small>
+                    </div>
+                     <div class="form-group">
+                      <label for="input-loan-terms">Loan Terms</label>
+                      <input type="text" class="form-control" id="input-principal" aria-describedby="principalHelp" placeholder="Enter Months">
+                      <small id="terms-info" class="form-text text-muted">3-18 Months</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col">
+            <!-- Personal Information -->
+            <div class="card mt-2">
+              <div class="card-body">
+                <h5 class="card-title">Customer Information</h5>
+                <div class="form-group">
+                  <label for="input-fullname">Full Name</label>
+                  <input type="text" class="form-control" id="input-fullname" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                  <label for="input-email">Email</label>
+                  <input type="email" class="form-control" id="input-email" placeholder="Enter Email">
+                </div>
+                <div class="form-group">
+                  <label for="input-mobile-number">Mobile Number</label>
+                  <input type="email" class="form-control" id="input-mobile-number" placeholder="Enter Mobile Number">
+                </div>
+                <div class="form-group">
+                  <label for="input-city">City</label>
+                  <input type="email" class="form-control" id="input-city" placeholder="Enter City">
+                </div>
+                <div class="form-group">
+                  <label for="input-province">Province</label>
+                  <input type="email" class="form-control" id="input-province" placeholder="Enter Province">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary">Save changes</button>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script type="text/javascript">
+    $( document ).ready(function() {
+      // Loan type select
+      $("#select-loan-type").on('change', function() {
+        if(this.value == "A"){
+          $("#loan-type-header").text("Type A");
+          $("#type-b").hide();
+          $("#type-a").show();
+          $("#terms-info").text("3-18 months");
+        }else{
+          $("#loan-type-header").text("Type B");
+          $("#type-a").hide();
+          $("#type-b").show();
+          $("#terms-info").text("6-18 months");
+        }
+      });
+    });
+</script>
+{% endblock %}

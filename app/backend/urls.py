@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
-from ui.views import Dashboard
+from backend.views import LogIn
 
 urlpatterns = [
-    path('dashboard', Dashboard.as_view()),
+    path('login', LogIn.as_view()),
 ]

@@ -2,31 +2,27 @@
 {% load static %}
 {% block content %}
 <!-- Responsive navbar-->
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">Golden Financial</a>
     </div>
 </nav>
 <!-- Page content-->
+<div id="alert-message" class="alert alert-danger mt-1 mr-1 ml-1" role="alert" style="display: None">
+</div>
 <div class="container">
     <div class="row mt-5">
         <div class="col-4">
-            <form>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-              </div>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-              </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <div class="form-group">
+              <label for="input-username">Username</label>
+              <input type="text" class="form-control" id="input-username" aria-describedby="usernameHelp" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+              <label for="input-password">Password</label>
+              <input type="password" class="form-control" id="input-password" placeholder="Password">
+            </div>
+            <button id="btn-submit" class="btn btn-primary">Log In</button>
         </div>
     </div>
 </div>
@@ -35,7 +31,37 @@
 {% block additional_scripts %}
 <script type="text/javascript">
     $( document ).ready(function() {
-        alert( "ready!" );
+
+        $("#btn-submit").click(function() {
+          if($("#input-username").val() == "" || $("#input-password").val() == ""){
+            $("#alert-message").text("Invalid Input");
+            $("#alert-message").show();
+          }else{
+            post_data = {
+              "username": $("#input-username").val(),
+              "password": $("#input-password").val()
+            };
+            $.ajax({
+                contentType: 'application/json',
+                data: JSON.stringify(post_data),
+                dataType: 'json',
+                success: function(data){
+                  if(data["message"] == "valid"){
+                    window.location.replace("/ui/dashboard");
+                  }else{
+                    $("#alert-message").text("User Not Found");
+                    $("#alert-message").show();
+                  }
+                },
+                error: function(){
+                   alert("OOOPSSS! Something Went Wrong!");
+                },
+                type: 'POST',
+                processData: false,
+                url: '/api/login'
+            });
+          }
+      });
     });
 </script>
 {% endblock %}
