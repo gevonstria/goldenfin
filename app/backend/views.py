@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.views.generic import View
 from django.http import JsonResponse
 from backend.models import LoanDetails, Customer
+from backend.helpers import loan_summary
 import json
 
 class LogIn(View):
@@ -24,7 +25,7 @@ class Loan(View):
         customers = Customer.objects.all()
         for cust in customers:
             data = {
-                "id": cust.id,
+                "id": cust.loan.id,
                 "loan_type": cust.loan.loan_type,
                 "loan_amount": cust.loan.loan_amount,
                 "fullname": cust.fullname,
@@ -63,3 +64,14 @@ class Loan(View):
         message = "success"
         return JsonResponse({"message": message})
 
+class LoanDescribe(View):
+
+    def get(self, request, loan_id):
+
+        loan = LoanDetails.objects.get(id=loan_id)
+        if loan:
+            loan_data = loan_summary(loan)
+        else:
+            return HttpResponseNotFound("Loan Id not found.")         
+
+        return JsonResponse(loan)

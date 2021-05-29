@@ -81,7 +81,7 @@
                   <div class="card-body">
                     <h5 class="card-title">Loan Information</h5>
                     <h6 id="loan-type-header" class="card-subtitle mb-2 text-muted">Type A</h6>
-                    <div id="type-a" class="form-group">
+                    <div class="form-group">
                       <label for="input-principal">Desired loan amount (principal)</label>
                       <input type="text" class="form-control" id="input-principal" aria-describedby="principalHelp" placeholder="Enter Amount">
                       <small id="emailHelp" class="form-text text-muted">Minimum of Php 10,000.00</small>
@@ -89,7 +89,7 @@
                     <div id="type-b" class="form-group" style="display: None">
                       <label for="input-amortization">Desired Monthly Amortization</label>
                       <input type="text" class="form-control" id="input-amortization" aria-describedby="amortizationHelp" placeholder="Enter Amount">
-                      <small id="emailHelp" class="form-text text-muted">Minimum of Php 10,000.00</small>
+                      <small id="emailHelp" class="form-text text-muted">Minimum of Php 1,000</small>
                     </div>
                      <div class="form-group">
                       <label for="input-loan-terms">Loan Terms</label>
@@ -157,7 +157,7 @@
               { data: 'loan_amount' },
               { data: 'fullname' },
               { data: 'city' },
-              { data: null, render: function ( data, type, row ) {return "<button id="+data["id"] +" class='btn btn-sm btn-primary btn-view'>View</button>";} }
+              { data: null, render: function ( data, type, row ) {return "<button id="+data["id"] +" class='btn btn-sm btn-info btn-view'>View</button>";} }
           ]
       } );
       // populate for testing
@@ -175,7 +175,6 @@
         if(this.value == "A"){
           $("#loan-type-header").text("Type A");
           $("#type-b").hide();
-          $("#type-a").show();
           $("#terms-info").text("3-18 months");
         }else{
           $("#loan-type-header").text("Type B");
@@ -218,6 +217,17 @@
             processData: false,
             url: '/api/loans'
         });
+      });
+
+    $(document).on( "click", ".btn-view", function(){
+        alert($(this).attr("id"));
+        $.ajax({
+          url: "/api/loan/" +$(this).attr("id"),
+          type: 'GET',
+          success: function(data) {
+              console.log(data);
+          }
+      });
       });
     }); // end of doc ready
 </script>
