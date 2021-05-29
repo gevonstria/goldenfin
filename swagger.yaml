@@ -1,0 +1,71 @@
+openapi: "3.0.0"
+info:
+  title: Golden Financial Rest API
+  version: '1.0'
+servers:
+  - url: 'http://localhost/api'
+    description: Local
+
+paths:
+  /api/loans:
+    get:
+      tags:
+        - Room
+      summary: "Get List of Loans"
+      description: "Returns a list of loans"
+      responses:
+        "200":
+          description: "Endpoint to get Loan List"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanList'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                Property not found:
+                  value:
+                    code: 101
+                    error: Loan Not found
+                    
+components:
+  schemas:
+    LoanList:
+      description: Loan List
+      type: array
+      items:
+        $ref: '#/components/schemas/Loan'
+    Loan:
+      description: Loan Object
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        loan_type:
+          type: string
+          example: A
+        loan_amount:
+          type: number
+          example: 10000
+        loan_term:
+          type: number
+          exampler: 12
+        fullname:
+          type: string
+          example: "Juan dela Cruz"
+        mobile_number:
+          type: string
+          example: 099944367171
+        city:
+          type: string
+          example: Manila
+        province:
+          type: string
+          example: NCR
+        
+        
+                    
+  

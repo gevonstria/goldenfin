@@ -28,8 +28,11 @@ class Loan(View):
                 "id": cust.loan.id,
                 "loan_type": cust.loan.loan_type,
                 "loan_amount": cust.loan.loan_amount,
+                "loan_term": cust.loan.loan_terms,
                 "fullname": cust.fullname,
-                "city": cust.city
+                "mobile_number": cust.mobile_number,
+                "city": cust.city,
+                "province": cust.province
             }
             table_list.append(data)
 
