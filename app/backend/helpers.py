@@ -42,7 +42,7 @@ def loan_summary(loan):
         "principal_amount": currency_format(loan.loan_amount),
         "monthly_amortization": currency_format(monthly_amortization),
         "total_interest": currency_format(total_interest),
-        "loan_terms": str(loan.loan_terms),
+        "loan_terms": str(int(loan.loan_terms)),
         "total_sum_upon_maturity": currency_format(total_sum_upon_maturity),
         "first_loan_payment_date": get_first_loan_payment_date(),
         "loan_maturity_date": get_loan_maturity_date(loan.created_at, loan.loan_terms)
