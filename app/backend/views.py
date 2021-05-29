@@ -20,7 +20,20 @@ class LogIn(View):
 class Loan(View):
 
     def get(self, request):
-        pass
+        table_list = []
+        customers = Customer.objects.all()
+        for cust in customers:
+            data = {
+                "id": cust.id,
+                "loan_type": cust.loan.loan_type,
+                "loan_amount": cust.loan.loan_amount,
+                "fullname": cust.fullname,
+                "city": cust.city
+            }
+            table_list.append(data)
+
+        return JsonResponse({"data": table_list})
+
 
     def post(self, request):
         post_data = json.loads(request.body)

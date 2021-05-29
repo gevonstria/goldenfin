@@ -11,6 +11,10 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}" crossorigin="anonymous">
+
+        {% block header_additions %}
+
+        {% endblock %}
     </head>
     <body>
     {% block content %}

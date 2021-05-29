@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block header_additions %}
+<link rel="stylesheet" type="text/css" href="{% static 'dataTables/datatables.min.css' %}"/>
+{% endblock %}
+
 {% block content %}
 <!-- Responsive navbar-->
 
@@ -24,8 +29,26 @@
                 <div class="col-3"></div>
                 <div class="col-3"></div>
                 <div class="col-3">
-                  <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-add">Add</button>
-                  <button type="button" class="btn btn-sm btn-warning">Cancel</button>
+                  <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#modal-add">Add</button>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col">
+                  <table id="table-loans" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Loan Type</th>
+                            <th>Amount</th>
+                            <th>Full Name</th>
+                            <th>City</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -118,9 +141,25 @@
 {% endblock %}
 
 {% block additional_scripts %}
+<script type="text/javascript" src="{% static 'dataTables/datatables.min.js' %}"></script>
 <script type="text/javascript">
     $( document ).ready(function() {
-
+      
+      $('#table-loans').DataTable( {
+          ajax: {
+              url: '/api/loans',
+              dataSrc: 'data',
+              type: 'GET'
+          },
+          columns: [
+              { data: 'id' },
+              { data: 'loan_type' },
+              { data: 'loan_amount' },
+              { data: 'fullname' },
+              { data: 'city' },
+              { data: null, render: function ( data, type, row ) {return "<button id="+data["id"] +" class='btn btn-sm btn-primary btn-view'>View</button>";} }
+          ]
+      } );
       // populate for testing
       $("#input-principal").val("10000");
       $("#input-amortization").val(0);
