@@ -3,14 +3,14 @@ info:
   title: Golden Financial Rest API
   version: '1.0'
 servers:
-  - url: 'http://localhost/api'
+  - url: 'http://127.0.0.1:8080/'
     description: Local
 
 paths:
   /api/loans:
     get:
       tags:
-        - Room
+        - Loan
       summary: "Get List of Loans"
       description: "Returns a list of loans"
       responses:
@@ -30,6 +30,93 @@ paths:
                     code: 101
                     error: Loan Not found
                     
+    post:
+      tags:
+        - Loan
+      summary: "POST to add New Loan"
+      description: "Pass request body to create a new loan entry"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                loan_type:
+                  type: string
+                  example: A
+                loan_amount:
+                  type: number
+                  example: 10000
+                loan_term:
+                  type: number
+                  example: 12
+                fullname:
+                  type: string
+                  example: "Juan dela Cruz"
+                mobile_number:
+                  type: string
+                  example: 099944367171
+                city:
+                  type: string
+                  example: Manila
+                province:
+                  type: string
+                  example: NCR
+                
+        description: "Json fields required to post"
+        required: true
+      responses:
+        "200":
+          description: "Endpoint to get Loan List"
+          content:
+            application/json:
+              examples:
+                Success:
+                  value:
+                    message: success
+        "500":
+          description: Error
+          content:
+            application/json:
+              examples:
+                Error:
+                  value:
+                    error: error
+  
+  /api/loan/{loan_id}:
+    get:
+      tags:
+        - Loan Summary
+      summary: "Loan Summary Computation"
+      description: "Get Loan Calculated Fields"
+      parameters:
+      - in: "path"
+        schema:
+          type: string
+        required: true
+        name: "loan_id"
+        description: "Pass loan id in url param"
+      responses:
+        "200":
+          description: "Endpoint to get Loan Summary"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanSummary'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              examples:
+                Property not found:
+                  value:
+                    code: 101
+                    error: Loan Not found
+        
+  
 components:
   schemas:
     LoanList:
@@ -52,7 +139,7 @@ components:
           example: 10000
         loan_term:
           type: number
-          exampler: 12
+          example: 12
         fullname:
           type: string
           example: "Juan dela Cruz"
@@ -65,6 +152,31 @@ components:
         province:
           type: string
           example: NCR
+    LoanSummary:
+      description: Loan Summary Object
+      type: object
+      properties:
+        principal_amount:
+          type: number
+          example: 10000
+        monthly_amortization:
+          type: number
+          example: 945.60
+        total_interest:
+          type: number
+          example: 1,347.20
+        loan_terms:
+          type: number
+          example: 12
+        total_sum_upon_maturity:
+          type: number
+          example: 11,347.00
+        first_loan_payment_date:
+          type: string
+          example: June 22, 2021
+        loan_maturity_date:
+          type: string
+          example: May 29, 2022
         
         
                     
