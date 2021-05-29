@@ -68,6 +68,7 @@
         </button>
       </div>
       <div class="modal-body">
+        <div id="alert-message-modal" class="alert alert-danger mt-1 mr-1 ml-1" role="alert" style="display: None"></div>
         <div class="row">
           <div class="col">
             <form>
@@ -198,9 +199,9 @@
       $("#input-principal").val("10000");
       $("#input-amortization").val(0);
       $("#input-loan-terms").val("3");
-      $("#input-fullname").val("Joven Tria");
-      $("#input-email").val("gevtria@gmail.com");
-      $("#input-mobile-number").val("09159627501");
+      $("#input-fullname").val("Juan dela Cruz");
+      $("#input-email").val("jdlc@gmail.com");
+      $("#input-mobile-number").val("09169627801");
       $("#input-city").val("Manila");
       $("#input-province").val("NCR");
 
@@ -218,6 +219,36 @@
         }
       }); // end of select
       $("#btn-loan-save").click(function() {
+        $("#alert-message-modal").empty();
+
+        if($("#input-principal").val() < 10000){
+          $("#alert-message-modal").empty();
+          $("#alert-message-modal").text("Invalid Loan Amount");
+          $("#alert-message-modal").show();
+          return;
+        }
+
+        if($("#select-loan-type").val()=="B" && $("#input-amortization").val() < 1000){
+          $("#alert-message-modal").empty();
+          $("#alert-message-modal").text("Invalid Amortization Amount");
+          $("#alert-message-modal").show();
+          return;
+        }
+
+        if($("#select-loan-type").val()=="A" && ( $("#input-loan-terms").val()<3 || $("#input-loan-terms").val()>18) ){
+          $("#alert-message-modal").empty();
+          $("#alert-message-modal").text("Invalid Terms");
+          $("#alert-message-modal").show();
+          return;
+        }
+
+         if($("#select-loan-type").val()=="B" && ( $("#input-loan-terms").val()<6 || $("#input-loan-terms").val()>18) ){
+          $("#alert-message-modal").empty();
+          $("#alert-message-modal").text("Invalid Terms");
+          $("#alert-message-modal").show();
+          return;
+        }
+
         $("#modal-add").modal("hide");
         $("#save-message").show();
 
