@@ -1,5 +1,8 @@
+from django.conf import settings
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from django.core.mail import EmailMultiAlternatives
+from backend.models import LoanDetails, Customer
 import numpy as np
 
 def currency_format(amount):
@@ -30,7 +33,61 @@ def get_loan_maturity_date(date_applied, term):
     three_mon_rel = relativedelta(months=term)
     return datetime.strftime(date_applied +three_mon_rel, "%B %d, %Y")
 
-def loan_summary(loan):
+def send_email(loan_data):
+    
+    customer = Customer.objects.filter(loan__id=loan_data["loan_id"]).first()
+    table_html = "<table>"
+    table_html += "<tr>";
+    table_html += "<td>Principal Amount</td>";
+    table_html += "<td>" +loan_data["principal_amount"] +"</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>Monthly Amortization</td>";
+    table_html += "<td>" +loan_data["monthly_amortization"] +"</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>Total Interest</td>";
+    table_html += "<td>" +loan_data["total_interest"] +"</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>Loan Term</td>";
+    table_html += "<td>" +loan_data["loan_terms"] +" month(s)</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>Total Sum of Payments upon Loan Maturity</td>";
+    table_html += "<td>" +loan_data["total_sum_upon_maturity"] +"</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>First Loan Payment Date</td>";
+    table_html += "<td>" +loan_data["first_loan_payment_date"] +"</td>";
+    table_html += "</tr>";
+    # ----------------------------------------
+    table_html += "<tr>";
+    table_html += "<td>Loan Maturity Date</td>";
+    table_html += "<td>" +loan_data["loan_maturity_date"] +"</td>";
+    table_html += "</tr>";
+    table_html += "</table>"
+
+    subject = "YOUR LOAN DETAILS FROM GOLDEN FINANCING"
+    message_html = "<p>Dear " + customer.fullname + ", </p>"
+    message_html += "<p>Loan Details</p>"
+    message_html += table_html
+    message_html += "<p>Thank you</p>"
+
+    print(message_html)
+
+    # Send Email
+    mail = EmailMultiAlternatives(subject, "", settings.EMAIL_HOST_USER, [customer.email])
+    mail.attach_alternative(message_html, "text/html")
+    mail.send()
+
+
+def loan_summary(loan, is_email=False):
     if loan.loan_type=="A":
         monthly_amortization = get_monthly_amortization(loan.loan_terms, loan.loan_amount)
     else:
@@ -39,6 +96,7 @@ def loan_summary(loan):
     total_sum_upon_maturity = get_total_sum_upon_maturity(monthly_amortization, loan.loan_terms)
 
     data = {
+        "loan_id": loan.id,
         "principal_amount": currency_format(loan.loan_amount),
         "monthly_amortization": currency_format(monthly_amortization),
         "total_interest": currency_format(total_interest),
@@ -47,4 +105,7 @@ def loan_summary(loan):
         "first_loan_payment_date": get_first_loan_payment_date(),
         "loan_maturity_date": get_loan_maturity_date(loan.created_at, loan.loan_terms)
     }
+
+    if is_email:
+        send_email(data)
     return data

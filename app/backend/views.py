@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.views.generic import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from backend.models import LoanDetails, Customer
 from backend.helpers import loan_summary
 import json
@@ -70,11 +70,15 @@ class Loan(View):
 class LoanDescribe(View):
 
     def get(self, request, loan_id):
-
+        # try:
+        send_email=False
         loan = LoanDetails.objects.get(id=loan_id)
         if loan:
-            loan_data = loan_summary(loan)
-        else:
-            return HttpResponseNotFound("Loan Id not found.")         
+            if request.GET.get("send_email"):
+                if request.GET.get("send_email") == "true":
+                    send_email=True
 
-        return JsonResponse(loan_data)
+            loan_data = loan_summary(loan, is_email=send_email)
+            return JsonResponse(loan_data)
+        # except:
+        #     return HttpResponseNotFound("Loan Id not found.")

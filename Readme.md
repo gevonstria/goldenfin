@@ -13,6 +13,8 @@ Prerequisites:
 
 ## Usage
 
+On project root directory:
+
 ```bash
 docker-compose build
 docker-compose up
@@ -24,6 +26,13 @@ Point browser to ***0.0.0.0:8000/ui/dashboard***
 ***0.0.0.0:8000/admin***
 
 >Django admin can be accessed, username and password to be provided on separate channel
+
+## Email Functionality
+***To use the email function, edit .env file and fill in the email credentials(Make sure allow insecure apps is enabled on the account) before docker-compose build***
+```
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+```
 
 ## Notes
 

@@ -99,6 +99,12 @@ paths:
         required: true
         name: "loan_id"
         description: "Pass loan id in url param"
+      - in: "query"
+        name: "send_email"
+        schema:
+          type: string
+        description: "attach send_email=true in url to send email"
+        
       responses:
         "200":
           description: "Endpoint to get Loan Summary"
@@ -156,6 +162,9 @@ components:
       description: Loan Summary Object
       type: object
       properties:
+        loan_id:
+          type: integer
+          example: 9
         principal_amount:
           type: number
           example: 10000
