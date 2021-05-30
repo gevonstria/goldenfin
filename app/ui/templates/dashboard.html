@@ -167,6 +167,7 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button id="btn-send-email" data-loan-id=0 type="button" class="btn btn-success" data-dismiss="modal">Send To Email</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -287,8 +288,9 @@
     $(document).on( "click", ".btn-view", function(){
         $("#table-loan-summary-body").empty();
         $("#modal-loan-summary").modal("show");
+        var loan_id = $(this).attr("id")
         $.ajax({
-          url: "/api/loan/" +$(this).attr("id"),
+          url: "/api/loan/" +loan_id,
           type: 'GET',
           success: function(data) {
             table_html = "<tr>";
@@ -329,6 +331,23 @@
             $("#table-loan-summary-body").append($(table_html));
           }
       });
+
+      $("#btn-send-email").attr("data-loan-id", loan_id);
+      });
+
+      $(document).on( "click", "#btn-send-email", function(){
+        $("#alert-message").empty();
+        $("#alert-message").text("Sending Email");
+        $("#alert-message").show();
+        var loan_id = $("#btn-send-email").attr("data-loan-id");
+        $.ajax({
+            success: function(data){
+              $("#alert-message").empty();
+              $("#alert-message").text("Email Sent");
+            },
+            type: 'GET',
+            url: '/api/loan/' +loan_id +"?send_email=true"
+        });
       });
     }); // end of doc ready
 </script>
