@@ -7,6 +7,7 @@ A simple loan calculator
 Clone the repository on your local machine
 
 Prerequisites:
+***Proper Installation and Recent Versions of the following***
 - Docker
 - docker-compose
 
@@ -18,7 +19,6 @@ On project root directory:
 Set up an .env file - /app/.env (besides manage.py) with the following contents:
 
 ```
-HOST=0.0.0.0
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
 ```
@@ -56,12 +56,13 @@ python3 -m venv goldenfin
 ```
 
 2. Clone this repository, folder structure should be like below
-
-goldenfin
+```
+-goldenfin
 --bin(venv files)
 --app(this app repo)
 ---app
 ----app(final folder containing settings.py)
+```
 
 3. Activate Vend and Install libraries
 ```
