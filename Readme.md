@@ -66,6 +66,7 @@ python3 -m venv goldenfin
 
 3. Activate Vend and Install libraries
 ```
+cd goldenfin
 source ./bin/activate
 cd app/app
 pip install -r requirements.txt
@@ -80,3 +81,4 @@ python manage.py runserver 127.0.0.1:8080
 ```
 source non-docker-env
 ```
+Then launch django dev server again.
