@@ -68,7 +68,7 @@ python3 -m venv goldenfin
 ```
 cd goldenfin
 source ./bin/activate
-cd app/app
+cd app
 pip install -r requirements.txt
 ```
 
