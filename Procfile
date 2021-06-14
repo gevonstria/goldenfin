@@ -1,1 +1,1 @@
-web: cd app && gunicorn app.app.wsgi --log-file - 
+web: cd app && gunicorn app.wsgi --log-file - 
